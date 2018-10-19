@@ -1,0 +1,18 @@
+FROM php:7-apache
+COPY php.ini /usr/local/etc/php
+
+# 関連パッケージ、dockerのphp公式拡張を取得
+RUN apt-get update \
+    && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev zip unzip git\
+    && docker-php-ext-install pdo_mysql mysqli mbstring gd iconv
+
+# apache2のrewriteを有効化(Debian系)
+RUN cd /etc/apache2/mods-enabled \
+    && ln -s ../mods-available/rewrite.load
+
+# composerのインストール
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
+
+#CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+#WORKDIR /var/www/html

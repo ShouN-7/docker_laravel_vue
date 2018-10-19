@@ -1,0 +1,47 @@
+version: '3'
+services:
+    web:
+        container_name: "apache-php"
+        build:
+            context: ./web
+            dockerfile: Dockerfile-php-apache
+        ports:
+            - 80:80
+        links:
+            - db
+        volumes:
+            - "./src/lara-d:/var/www/html"
+            - "./web/apache2/sites-available:/etc/apache2/sites-available"
+    db:
+        container_name: "mysql"
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=homestead
+        ports:
+            - 3306:3306
+        volumes:
+            - mysql:/var/lib/mysql
+    phpmyadmin:
+        container_name: "phpmyadmin"
+        image: phpmyadmin/phpmyadmin:latest
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=db
+            - PMA_USER=root
+            - PMA_PASSWORD=root
+        ports:
+            - 8080:80
+        links:
+            - db
+    node:
+        container_name: "node"
+        build:
+            context: .
+            dockerfile: Dockerfile-node
+        command: npm run watch-poll
+        volumes:
+            - "./src/lara-d:/home/app/lara-d"
+            - "/home/app/lara-d/node_modules"
+volumes:
+    mysql:
