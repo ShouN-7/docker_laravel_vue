@@ -55991,17 +55991,19 @@ module.exports = {
         login: function login() {
             var _this = this;
 
-            console.log('req');
-            axios.post('/api/login', {
-                userId: this.userId,
-                password: this.pass
-            }).then(function (res) {
-                if (res) {
+            var data = { userId: this.userId, password: this.pass };
+            console.log(data);
+            axios.post('/api/login', data).then(function (res) {
+                console.log(res.data);
+                if (!res.data) {
                     _this.error = "NO!";
                 } else {
-                    _this.error = "YES!";
+                    //$emit('setCollection', data);
+                    _this.$router.push({ path: 'about' });
                 }
                 console.log('res');
+            }).catch(function (err) {
+                console.log('err: ', err);
             });
         }
     }

@@ -40,6 +40,8 @@ services:
             context: .
             dockerfile: Dockerfile-node
         command: npm run watch-poll
+        ports:
+            - 2000:2000
         volumes:
             - "./src/lara-d:/home/app/lara-d"
             - "/home/app/lara-d/node_modules"

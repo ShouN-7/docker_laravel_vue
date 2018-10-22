@@ -50,8 +50,7 @@ module.exports = {
                 if (!res.data){
                     this.error = "NO!";
                 }else{
-                    //$emit('setCollection', data);
-                    this.$router.push({path: 'about'});
+                    this.error = "YES!";
                 }
                 console.log('res');
             }).catch(err => {

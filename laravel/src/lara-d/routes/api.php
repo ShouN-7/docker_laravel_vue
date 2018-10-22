@@ -18,5 +18,9 @@ use Illuminate\Http\Request;
 //});
 
 Route::group(['middleware' => 'api'], function(){
-    Route::post('login', 'LoginController@login');
+    Route::post('/login', 'LoginController@login');
+//    Route::post('/login', function(){
+//        Log::debug('pass api');
+//        return "true";
+//    });
 });

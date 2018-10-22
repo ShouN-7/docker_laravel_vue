@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     //
-    protected $table = 'user';
+    protected $table = 'users';
     protected $primaryKey = 'id';
-    public $userId = 'userId';
-    public $pass = 'password';
+    protected $userId = 'userId';
+    protected $password = 'password';
 }
