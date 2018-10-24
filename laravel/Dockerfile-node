@@ -1,25 +1,22 @@
 FROM node:10
 
 # appユーザ追加 & npmの最新版DL
-RUN useradd --user-group --create-home --shell /bin/false app \
+RUN useradd --user-group --create-home -u 1000 -o --shell /bin/false node-app \                                                                                    
+    && groupmod -g 1000 -o node-app \                                                                                                                              
     && npm install --global npm@6.4.1 yarn
 
-# appユーザ設定 
-ENV HOME=/home/app
-
+# 環境変数を引継ぎ
+ARG SRC_DIR 
+ARG NODE_HOME
 
 # hostからpackage.jsonをコピー
-ADD ./src/lara-d/package.json $HOME/lara-d/
-#ADD ./src/lara-d/npm-shrinkwrap.json $HOME/lara-d/
-ADD ./src/lara-d/yarn.lock $HOME/lara-d/
+ADD $SRC_DIR/package.json $NODE_HOME
+ADD $SRC_DIR/yarn.lock $NODE_HOME
 
-# appユーザに/home/app配下のファイルへの権限付与
-RUN chown -R app:app $HOME/*
 
 # appユーザに切替
-USER app
-WORKDIR $HOME/lara-d 
+USER node-app
+WORKDIR $NODE_HOME
 
 # yarn導入後パッケージ導入
-#RUN npm install -g yarn &&\
 RUN yarn install --dev 

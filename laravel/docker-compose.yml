@@ -10,7 +10,7 @@ services:
         links:
             - db
         volumes:
-            - "./src/lara-d:/var/www/html"
+            - "${SRC_DIR}:/var/www/html"
             - "./web/apache2/sites-available:/etc/apache2/sites-available"
     db:
         container_name: "mysql"
@@ -39,11 +39,12 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-node
-        command: npm run watch-poll
-        ports:
-            - 2000:2000
+            args:
+                - NODE_HOME=$NODE_HOME
+                - SRC_DIR=$SRC_DIR
+        command: yarn run watch-poll
         volumes:
-            - "./src/lara-d:/home/app/lara-d"
-            - "/home/app/lara-d/node_modules"
+            - "${SRC_DIR}:${NODE_HOME}"
+            - "${NODE_HOME}/node_modules"
 volumes:
     mysql:

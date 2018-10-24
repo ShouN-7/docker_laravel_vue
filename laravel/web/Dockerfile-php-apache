@@ -14,5 +14,6 @@ RUN cd /etc/apache2/mods-enabled \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-#CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-#WORKDIR /var/www/html
+# apacheユーザ(default:www-data)のアクセス権調整                                                                                                                   
+RUN usermod -u 1000 www-data \                                                                                                                                     
+    && groupmod -g 1000 www-data 
